@@ -1,6 +1,6 @@
 {
   "name": "file-janitor",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "type": "module",
   "main": "out/main/electron-main.js",
   "scripts": {
