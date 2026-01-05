@@ -1,0 +1,5 @@
+{
+  "name": "File Janitor",
+  "description": "A desktop-grade file organization utility that sorts messy folders into categorized subfolders based on file extensions.",
+  "requestFramePermissions": []
+}
