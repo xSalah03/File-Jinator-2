@@ -11,6 +11,10 @@
 - **Internal Scrolling**: Large directories are easily manageable with a dedicated, scrollable organization queue.
 - **AI Ready**: Foundation laid for content-aware organization using the Google Gemini API.
 
+## 💾 Download
+
+You can download the latest pre-built installers for Windows and macOS from the **[GitHub Releases](https://github.com/xSalah03/File-Jinator-2/releases)** page.
+
 ## 🛠️ Tech Stack
 
 - **Framework**: [Electron](https://www.electronjs.org/)
