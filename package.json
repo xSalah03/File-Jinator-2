@@ -36,6 +36,7 @@
   "build": {
     "appId": "com.filejanitor.app",
     "productName": "File Janitor",
+    "icon": "build/icon.png",
     "directories": {
       "output": "dist"
     },

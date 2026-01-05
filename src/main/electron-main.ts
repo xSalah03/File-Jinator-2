@@ -31,8 +31,14 @@ function createWindow() {
     },
     titleBarStyle: 'hiddenInset',
     backgroundColor: '#0f172a',
-    title: 'File Janitor'
+    title: 'File Janitor',
+    icon: path.resolve(__dirname, '../../resources/icon.png')
   });
+
+  // Set Dock icon for macOS
+  if (process.platform === 'darwin') {
+    app.dock.setIcon(path.resolve(__dirname, '../../resources/icon.png'));
+  }
 
   // HMR for development or load static file for production
   if (process.env.ELECTRON_RENDERER_URL) {
