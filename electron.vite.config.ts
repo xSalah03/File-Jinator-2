@@ -42,7 +42,7 @@ export default defineConfig(({ mode }) => {
       },
       build: {
         rollupOptions: {
-          input: 'index.html'
+          input: resolve(__dirname, 'src/renderer/index.html')
         }
       },
       server: {
