@@ -10,7 +10,7 @@
     "pack": "electron-builder",
     "build:win": "electron-vite build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
-    "release": "electron-vite build && electron-builder --publish always"
+    "release": "electron-vite build && electron-builder --win --mac --publish always"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
