@@ -1,19 +1,19 @@
 # File Janitor 🧹
 
-**File Janitor** is a premium, desktop-grade utility designed to organize cluttered directories with surgical precision. Built with Electron and React, it categorizes files into logical subfolders based on their extensions, providing a clean and structured workspace in seconds.
+**File Janitor** is a premium, AI-powered desktop utility designed to organize cluttered directories with surgical precision. Built with Electron and React, it uses Google Gemini to intelligently categorize files beyond simple extension matching, providing a clean and structured workspace in seconds.
 
 ## ✨ Features
 
-- **Standard-Compliant Architecture**: Organized using the industry-standard `src/main`, `src/renderer`, and `src/preload` layout.
-- **Dry Run Capabilities**: Preview all file movements before any changes are made to your filesystem.
-- **Premium UI/UX**: Built with Tailwind CSS, featuring modern gradients, micro-animations, and a responsive viewport-aware layout.
-- **Safety First**: Implements safety checks to prevent overwriting existing files by appending timestamps to duplicates.
-- **Internal Scrolling**: Large directories are easily manageable with a dedicated, scrollable organization queue.
-- **AI Ready**: Foundation laid for content-aware organization using the Google Gemini API.
+- **AI-Powered Categorization**: Utilizes **Google Gemini 1.5 Flash** to analyze filenames and intelligently determine the best folder destination.
+- **Dry Run Capabilities**: Preview all file movements and AI classifications before any changes are made to your filesystem.
+- **Cross-Platform Support**: Native installers available for both **Windows (.exe)** and **macOS (.dmg)**.
+- **Premium UI/UX**: A modern, dark-themed interface built with Tailwind CSS, featuring smooth micro-animations and responsive layouts.
+- **Safety First**: Intelligent filename conflict resolution (timestamps) ensures no data is ever overwritten.
+- **Industrial Layout**: Standardized `src/main`, `src/renderer`, and `src/preload` architecture for maximum stability.
 
 ## 💾 Download
 
-You can download the latest pre-built installers for Windows and macOS from the **[GitHub Releases](https://github.com/xSalah03/File-Jinator-2/releases)** page.
+Download the latest pre-built installers for Windows and macOS from the **[GitHub Releases](https://github.com/xSalah03/File-Jinator-2/releases)** page.
 
 ## 🛠️ Tech Stack
 
@@ -21,21 +21,21 @@ You can download the latest pre-built installers for Windows and macOS from the 
 - **Frontend**: [React 18](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)
 - **Build Tool**: [electron-vite](https://evite.netlify.app/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **API**: [Google Generative AI](https://ai.google.dev/) (Ready for future integration)
+- **AI Engine**: [Google Generative AI (Gemini)](https://ai.google.dev/)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (Latest LTS recommended)
+- [Node.js](https://nodejs.org/) (v20+ recommended)
 - [npm](https://www.npmjs.com/)
 
-### Installation
+### Installation & Setup
 
 1.  **Clone the repository**:
     ```bash
-    git clone [your-repo-url]
-    cd File-Jinator
+    git clone https://github.com/xSalah03/File-Jinator-2.git
+    cd File-Jinator-2
     ```
 
 2.  **Install dependencies**:
@@ -43,13 +43,13 @@ You can download the latest pre-built installers for Windows and macOS from the 
     npm install
     ```
 
-3.  **Configure Environment**:
-    Rename `.env.example` (or create a new one) to `.env.local` and add your API key:
+3.  **API Configuration**:
+    Create a `.env.local` file in the root and add your Gemini API key:
     ```env
-    GEMINI_API_KEY=your_actual_api_key_here
+    GEMINI_API_KEY=your_api_key_here
     ```
 
-### Running the App
+### Development & Build
 
 ```bash
 # Start development mode
@@ -58,23 +58,23 @@ npm run dev
 # Build for production
 npm run build
 
-# Package for distribution
-npm run pack
+# Release to GitHub (Automated via Actions)
+git tag v1.0.x
+git push origin v1.0.x
 ```
 
 ## 🏗️ Project Structure
 
 ```text
 ├── src/
-│   ├── main/             # Electron main process logic
-│   ├── preload/          # Secure IPC bridge
-│   ├── renderer/         # React application and UI components
-│   └── shared/           # Shared types and constants
-├── out/                  # Build artifacts
-├── electron.vite.config.ts # Core build configuration
-└── package.json          # Main manifest
+│   ├── main/             # Electron main process & Gemini Service
+│   ├── preload/          # Secure IPC Bridge
+│   ├── renderer/         # React application & UI
+│   └── shared/           # Cross-process types & constants
+├── .github/workflows/    # Automated Release CI/CD
+├── electron.vite.config.ts # Build configuration
+└── package.json          # Dependency manifest
 ```
 
-## 📄 License
-
-This project is open-source and available under the MIT License.
+---
+*Organize your digital life with the power of AI.*
