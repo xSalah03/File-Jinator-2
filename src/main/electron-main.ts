@@ -12,6 +12,11 @@ import { EXTENSION_MAP } from '../shared/constants';
 // Fix: Define __dirname for ESM compatibility as it is not available by default
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+import { GeminiService } from './services/gemini';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env.local
+dotenv.config({ path: path.join(app.getAppPath(), '.env.local') });
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -20,7 +25,7 @@ function createWindow() {
     minWidth: 900,
     minHeight: 700,
     webPreferences: {
-      preload: path.join(__dirname, '../preload/electron-preload.js'),
+      preload: path.join(__dirname, '../preload/electron-preload.mjs'),
       sandbox: false,
       contextIsolation: true
     },
@@ -44,25 +49,41 @@ function createWindow() {
 }
 
 const handleSelectFolder = async () => {
+  console.log('Main process: Handling select-folder request...');
   const result = await dialog.showOpenDialog({
     properties: ['openDirectory', 'createDirectory']
   });
+  console.log('Main process: Dialog result:', result.canceled ? 'Canceled' : result.filePaths[0]);
   return result.canceled ? null : result.filePaths[0];
 };
 
 const handleScanDirectory = async (_event: any, dirPath: string): Promise<FileMove[]> => {
   const files = await fs.readdir(dirPath, { withFileTypes: true });
   const pendingMoves: FileMove[] = [];
+  const fileNames = files.filter(f => f.isFile() && !f.name.startsWith('.')).map(f => f.name);
+
+  const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
+  let aiClassifications: Record<string, string> = {};
+
+  if (apiKey && fileNames.length > 0) {
+    console.log('Attempting AI classification for', fileNames.length, 'files...');
+    const gemini = new GeminiService(apiKey);
+    aiClassifications = await gemini.classifyFiles(fileNames);
+    console.log('AI classifications received:', aiClassifications);
+  }
 
   for (const file of files) {
     if (file.isFile() && !file.name.startsWith('.')) {
       const ext = path.extname(file.name).toLowerCase();
-      let category = 'Others';
+      let category = aiClassifications[file.name] || 'Others';
 
-      for (const [cat, exts] of Object.entries(EXTENSION_MAP)) {
-        if (exts.includes(ext)) {
-          category = cat;
-          break;
+      // Fallback to extension map if AI failed or returned Others
+      if (category === 'Others') {
+        for (const [cat, exts] of Object.entries(EXTENSION_MAP)) {
+          if (exts.includes(ext)) {
+            category = cat;
+            break;
+          }
         }
       }
 

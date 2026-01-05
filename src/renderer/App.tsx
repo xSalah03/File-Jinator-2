@@ -1,13 +1,9 @@
 
 import React, { useState, useMemo } from 'react';
 import { FileMove } from '../shared/types';
-import { mockElectron } from './services/mockElectron';
 import { CATEGORY_COLORS, CATEGORY_DOT_COLORS } from '../shared/constants';
 
-// For the demo environment, we attach mockElectron to window.electron only if the real API is missing
-if (typeof window !== 'undefined' && !window.electron) {
-  window.electron = mockElectron;
-}
+// Removed mockElectron fallback to ensure we only use the real Electron bridge
 
 const getCategoryIcon = (category: string) => {
   const commonProps = {
@@ -141,14 +137,27 @@ const App: React.FC = () => {
   };
 
   const handleSelectFolder = async () => {
-    const path = await window.electron.selectFolder();
-    if (path) {
-      setSelectedFolder(path);
-      setPendingMoves([]);
-      setHoveredCategory(null);
-      setActiveCategory(null);
-      setSortConfig(null);
-      setStatus({ type: 'info', message: `Folder selected: ${path}` });
+    console.log('Select Folder button clicked');
+    if (!window.electron) {
+      console.error('window.electron is undefined! Are you in a browser?');
+      setStatus({ type: 'error', message: 'Electron API not found. Please use the app window, not a browser.' });
+      return;
+    }
+    try {
+      console.log('Invoking select-folder IPC...');
+      const path = await window.electron.selectFolder();
+      console.log('Select folder result:', path);
+      if (path) {
+        setSelectedFolder(path);
+        setPendingMoves([]);
+        setHoveredCategory(null);
+        setActiveCategory(null);
+        setSortConfig(null);
+        setStatus({ type: 'info', message: `Folder selected: ${path}` });
+      }
+    } catch (err) {
+      console.error('IPC select-folder failed:', err);
+      setStatus({ type: 'error', message: 'Failed to open folder dialog.' });
     }
   };
 
