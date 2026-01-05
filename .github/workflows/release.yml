@@ -8,10 +8,17 @@ on:
 jobs:
   release:
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
 
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
+        include:
+          - os: macos-latest
+            target: --mac
+          - os: windows-latest
+            target: --win
 
     steps:
       - name: Checkout Code
@@ -27,7 +34,7 @@ jobs:
         run: npm install
 
       - name: Build and Publish
-        run: npm run release
+        run: npx electron-vite build && npx electron-builder ${{ matrix.target }} --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
